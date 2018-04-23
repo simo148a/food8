@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyheder</title>
+
+    <style>
+        img {
+            width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navigation" data-navigation></nav>
+
+    <section id="templateModtager"></section>
+    <template id="nyhedTemplate">
+       <article>
+           <img src="" data-nyhedpic>
+            <a id="knap" href=""><button><h2 data-nyhednavn></h2></button></a>
+            <p data-nyhedbeskrivelse></p>
+       </article>
+   </template>
+
+    <script>
+        let nyheder;
+        let templateModtager = document.querySelector("#templateModtager");
+        let nyhedTemplate = document.querySelector("#nyhedTemplate");
+
+
+        //hent Json
+        async function hentWpData() {
+            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/nyheder");
+
+            //vis objekt som Json
+            nyheder = await wpData.json();
+            visNyheder();
+
+        }
+
+        //lav en klon af template
+        function visNyheder() {
+            nyheder.forEach(nyhed => {
+                let klon = nyhedTemplate.cloneNode(true).content;
+                klon.querySelector("[data-nyhedpic]").src = nyhed.acf.foto;
+                klon.querySelector("[data-nyhednavn]").textContent = nyhed.acf.overskrift;
+                klon.querySelector("[data-nyhedbeskrivelse]").innerHTML = nyhed.acf.beskrivelse;
+
+                klon.querySelector("#knap").href = "modtagnyheder.html?id=" + nyhed.id;
+                templateModtager.appendChild(klon);
+            })
+        }
+
+        async function hentMenu() {
+            let topMenu = await fetch("navigation.html");
+            let menu = await topMenu.text();
+
+            document.querySelector("[data-navigation]").innerHTML = menu;
+        }
+
+        //hent indhold når siden er loaded 
+        document.addEventListener("DOMContentLoaded", hentWpData);
+        document.addEventListener("DOMContentLoaded", hentMenu);
+    </script>
+
+
+</body>
+
+</html>

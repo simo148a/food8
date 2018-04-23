@@ -1,0 +1,43 @@
+<body>
+    <nav id="navigation" data-navigation></nav>
+
+    <article>
+        <img src="" data-restaurantpic>
+        <h2 data-restaurantnavn></h2>
+        <p data-restaurantbeskrivelse></p>
+        <p data-tider></p>
+        <p data-adresse></p>
+        <p data-kontakt></p>
+    </article>
+</body>
+
+<script>
+    async function hentJson() {
+        let url = new URL(window.location.href);
+        let parameter = new URLSearchParams(url.search);
+        let id = parameter.get("id");
+
+        let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter/" + id);
+        let single = await jsonData.json();
+
+        document.querySelector("[data-restaurantpic]").src = single.acf.foto;
+        document.querySelector("[data-restaurantnavn]").textContent = single.acf.navn;
+        document.querySelector("[data-restaurantbeskrivelse]").innerHTML = single.acf.beskrivelse;
+        document.querySelector("[data-tider]").innerHTML = single.acf.abningstider;
+        document.querySelector("[data-adresse]").innerHTML = single.acf.adresse;
+        document.querySelector("[data-kontakt]").innerHTML = single.acf.kontakt;
+
+    }
+
+    async function hentMenu() {
+        let topMenu = await fetch("navigation.html");
+        let menu = await topMenu.text();
+
+        document.querySelector("[data-navigation]").innerHTML = menu;
+    }
+
+    //hent indhold når siden er loaded
+    document.addEventListener("DOMContentLoaded", hentJson);
+    document.addEventListener("DOMContentLoaded", hentMenu);
+
+</script>
