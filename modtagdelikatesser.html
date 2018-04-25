@@ -18,7 +18,7 @@
         let parameter = new URLSearchParams(url.search);
         let id = parameter.get("id");
 
-        let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter/" + id);
+        let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/delikatesser/" + id);
         let single = await jsonData.json();
 
         document.querySelector("[data-restaurantpic]").src = single.acf.foto.url;
@@ -28,7 +28,6 @@
         document.querySelector("[data-adresse]").innerHTML = single.acf.adresse;
         document.querySelector("[data-kontakt]").innerHTML = single.acf.kontakt;
         document.querySelector("[data-kontrolrapport]").href = single.acf.kontrolrapport.url;
-
 
     }
 

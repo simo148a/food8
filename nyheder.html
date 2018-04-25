@@ -10,6 +10,7 @@
         img {
             width: 400px;
         }
+
     </style>
 </head>
 
@@ -45,7 +46,7 @@
         function visNyheder() {
             nyheder.forEach(nyhed => {
                 let klon = nyhedTemplate.cloneNode(true).content;
-                klon.querySelector("[data-nyhedpic]").src = nyhed.acf.foto;
+                klon.querySelector("[data-nyhedpic]").src = nyhed.acf.foto.url;
                 klon.querySelector("[data-nyhednavn]").textContent = nyhed.acf.overskrift;
                 klon.querySelector("[data-nyhedbeskrivelse]").innerHTML = nyhed.acf.beskrivelse;
 
@@ -64,6 +65,7 @@
         //hent indhold når siden er loaded 
         document.addEventListener("DOMContentLoaded", hentWpData);
         document.addEventListener("DOMContentLoaded", hentMenu);
+
     </script>
 
 
