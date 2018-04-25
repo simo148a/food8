@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>FOOD8</title>
+
+
+    <style>
+        #slides {
+            clear: both;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+            padding: 0px;
+            margin: 0px;
+            list-style-type: none;
+        }
+
+        .slide {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 1;
+
+            -webkit-transition: opacity 1s;
+            -moz-transition: opacity 1s;
+            -o-transition: opacity 1s;
+            transition: opacity 1s;
+        }
+
+        .showing {
+            opacity: 1;
+            z-index: 1;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <nav id="navigation" data-navigation></nav>
+
+
+    <div id="slides">
+        <img class="slide showing" src="img/slider2.jpg">
+        <img class="slide" src="img/slider3.jpg">
+        <img class="slide" src="img/slider4.jpeg">
+        <img class="slide" src="img/slider5.jpeg">
+    </div>
+    <article id="indhold">
+
+        <h2>OM FOOD8</h2>
+
+        <p><strong>Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.</strong></p>
+        <p>Der vil altid være nye oplevelser og inspiration at hente på food8.dk. Vi samler nyheder, guides og bordbooking samme sted. Så har du allerede oplevet en af restauranter på food8, eller er der fuldt booket, så inspirerer vi dig til en anden god oplevelse. I det ugentlige nyhedsbrev kan du få historier, guides og nyheder om food8s steder.</p>
+        <p>Fælles for alle de steder, du finder på food8.dk er, at de er drevet af forskellige restauratører, som er gået sammen i en restaurationsgruppe for samlet at kunne tilbyde flere oplevelser.</p>
+        <p>Vil du i kontakt med os, så sig hej på
+            <a class="fed" href="info@food8.dk">info@food8.dk</a></p>
+
+    </article>
+
+    <script>
+        var slides = document.querySelectorAll('#slides .slide');
+        var currentSlide = 0;
+        var slideInterval = setInterval(nextSlide, 3000);
+
+        function nextSlide() {
+            slides[currentSlide].className = 'slide';
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].className = 'slide showing';
+        }
+
+    </script>
+
+    <script>
+        async function hentMenu() {
+            let topMenu = await fetch("navigation.html");
+            let menu = await topMenu.text();
+
+            document.querySelector("[data-navigation]").innerHTML = menu;
+        }
+
+        //hent indhold når siden er loaded 
+        document.addEventListener("DOMContentLoaded", hentMenu);
+
+    </script>
+
+
+</body>
+
+</html>

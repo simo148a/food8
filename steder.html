@@ -5,20 +5,51 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steder</title>
+
+    <style>
+        img.retter {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .overskrift {
+            margin: 0px 0 0 20px;
+        }
+
+        #knap button {
+            width: 30%;
+            background: #79c9b9;
+            border: 0;
+            padding: 7px 16px;
+            font-size: 14px;
+            font-weight: 100;
+            border-radius: 8px;
+            float: left;
+            margin: 0px 6px 40px 6px;
+        }
+
+        .retter_kort_beskrivelse p {
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
     <nav id="navigation" data-navigation></nav>
-
+    <h2 class="overskrift">STEDER</h2>
     <section id="templateModtager"></section>
     <template id="restaurantTemplate">
-       <article>
-           <img src="" data-restaurantpic>
-            <a id="knap" href=""><button><h2 data-restaurantnavn></h2></button></a>
-            <p data-restaurantbeskrivelse></p>
+       <article id="indhold">
+               <img class="retter" src="" alt="" data-restaurantpic>  
+            <h2 data-restaurantnavn></h2>
+            <p class="retter_kort_beskrivelse" data-restaurantbeskrivelse></p>
             <p data-tider></p>
             <p data-adresse></p>
             <p data-kontakt></p>
+            <a id="knap" data-restaurantnavn href=""><button>Læs mere</button></a>
+            <a id="knap" data-restaurantnavn href=""><button>Menukort</button></a>
+            <a id="knap" data-restaurantnavn href=""><button>Book bord</button></a>
        </article>
    </template>
 
@@ -42,12 +73,12 @@
         function visRestauranter() {
             restauranter.forEach(restaurant => {
                 let klon = restaurantTemplate.cloneNode(true).content;
-                klon.querySelector("[data-restaurantpic]").src = restaurant.acf.foto;
+                klon.querySelector("[data-restaurantpic]").src = restaurant.acf.foto.url;
                 klon.querySelector("[data-restaurantnavn]").textContent = restaurant.acf.navn;
-                klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.beskrivelse;
-                klon.querySelector("[data-tider]").innerHTML = restaurant.acf.abningstider;
-                klon.querySelector("[data-adresse]").innerHTML = restaurant.acf.adresse;
-                klon.querySelector("[data-kontakt]").innerHTML = restaurant.acf.kontakt;
+                klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.kort_beskrivelse;
+                //klon.querySelector("[data-tider]").innerHTML = restaurant.acf.abningstider;
+                //klon.querySelector("[data-adresse]").innerHTML = restaurant.acf.adresse;
+                //klon.querySelector("[data-kontakt]").innerHTML = restaurant.acf.kontakt;
                 klon.querySelector("#knap").href = "modtagrestaurant.html?id=" + restaurant.id;
                 templateModtager.appendChild(klon);
             })
