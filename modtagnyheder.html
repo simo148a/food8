@@ -1,11 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+    <title></title>
+</head>
+
+
+
 <body>
     <nav id="navigation" data-navigation></nav>
 
-    <article>
-        <img src="" data-nyhedpic>
+    <article id="indhold">
+        <img class="retter" src="" data-nyhedpic>
         <h2 data-nyhednavn></h2>
         <p data-nyhedbeskrivelse></p>
     </article>
+
+    <div class="form_nyhedsbrev">
+        <form id="contact" action="" method="post">
+            <h2>Vil du være den der anbefaler restauranter til dine venner?</h2>
+            <p>Skriv dig op til vores nyhedsbrev og få ugentlige guides og nyheder om food8s deltagende steder.</p>
+            <fieldset>
+                <input placeholder="Navn" type="text" required>
+            </fieldset>
+            <fieldset>
+                <input placeholder="Email" type="email" required>
+            </fieldset>
+            <fieldset>
+                <button name="submit" type="submit" id="contact-submit" onclick="document.getElementById('id01').style.display='block'">
+                    Tilmeld
+                </button>
+            </fieldset>
+        </form>
+    </div>
+
+    <!--<div id="id01" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <p>Tak, du er nu tilmeldt nyhedsbrevet.<br> Inden fro 24 timer vil du modtage en bekræftelsesmail og fremover modtage spændende nyheder fra Food8</p>
+            </div>
+        </div>
+    </div>-->
 </body>
 
 <script>
@@ -13,23 +52,17 @@
         let url = new URL(window.location.href);
         let parameter = new URLSearchParams(url.search);
         let id = parameter.get("id");
-
         let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/nyheder/" + id);
         let single = await jsonData.json();
-
-        document.querySelector("[data-nyhedpic]").src = single.acf.foto;
+        document.querySelector("[data-nyhedpic]").src = single.acf.foto.url;
         document.querySelector("[data-nyhednavn]").textContent = single.acf.overskrift;
         document.querySelector("[data-nyhedbeskrivelse]").innerHTML = single.acf.beskrivelse;
-
     }
-
     async function hentMenu() {
         let topMenu = await fetch("navigation.html");
         let menu = await topMenu.text();
-
         document.querySelector("[data-navigation]").innerHTML = menu;
     }
-
     //hent indhold når siden er loaded
     document.addEventListener("DOMContentLoaded", hentJson);
     document.addEventListener("DOMContentLoaded", hentMenu);
