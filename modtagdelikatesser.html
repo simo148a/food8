@@ -14,6 +14,7 @@
         <h3>Kontrolrapport</h3>
         <a id="kontrolrapport" href="" data-kontrolrapport>Se kontrolrapport <span class="underline">her</span></a>
     </article>
+    <div id="map"></div>
     <footer id="footer" data-footer></footer>
 </body>
 
@@ -43,9 +44,59 @@
         document.querySelector("[data-navigation]").innerHTML = menu;
     }
 
-    //hent indhold når siden er loaded
-    document.addEventListener("DOMContentLoaded", hentJson);
-    document.addEventListener("DOMContentLoaded", hentMenu);
+    let restaurantKort;
+    let map;
+
+    function initMap() {
+        var centrum = {
+            lat: 55.690071,
+            lng: 12.539130
+        };
+        map = new google.maps.Map(document.querySelector('#map'), {
+            zoom: 10,
+            center: centrum
+        });
+
+        hentWpDataTo();
+    }
+
+    async function hentWpDataTo() {
+        let url = new URL(window.location.href);
+        let parameter = new URLSearchParams(url.search);
+        let id = parameter.get("id");
+
+        let wpDataTo = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/delikatesser/" + id);
+
+        //vis objekt som Json
+
+        restaurantKort = await wpDataTo.json();
+
+        let geocoder = new google.maps.Geocoder();
+        visRestauranterKort(geocoder, map);
+
+    }
+
+    function visRestauranterKort(geocoder, resultsmap) {
+
+        address = restaurantKort.acf.adresse;
+        let navn = restaurantKort.acf.adresse;
+        console.log(address);
+        geocoder.geocode({
+            'address': address
+        }, function(results, status) {
+            if (status === 'OK') {
+                //resultsMap.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    title: navn
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    };
+
 
     async function hentFooter() {
         let footer = await fetch("footer.html");
@@ -54,7 +105,14 @@
         document.querySelector("[data-footer]").innerHTML = footerIndhold;
     }
 
-    //hent indhold når siden er loaded 
+    //hent indhold når siden er loaded
+    document.addEventListener("DOMContentLoaded", hentJson);
+    document.addEventListener("DOMContentLoaded", hentMenu);
     document.addEventListener("DOMContentLoaded", hentFooter);
+
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+
 
 </script>
