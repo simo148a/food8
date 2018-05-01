@@ -5,35 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delikatesser</title>
-
-    <style>
-        /*img.retter {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .overskrift {
-            margin: 0px 0 0 20px;
-        }
-
-        #knap button {
-            width: 30%;
-            background: #79c9b9;
-            border: 0;
-            padding: 7px 16px;
-            font-size: 14px;
-            font-weight: 100;
-            border-radius: 8px;
-            float: left;
-            margin: 0px 6px 40px 6px;
-        }
-
-        .retter_kort_beskrivelse p {
-            margin: 0;
-        }*/
-
-    </style>
 </head>
 
 <body>
@@ -41,18 +12,40 @@
     <h2 class="overskrift">DELIKATESSER</h2>
     <section id="templateModtager"></section>
     <template id="restaurantTemplate">
-       <article id="indhold">
-               <img class="retter" src="" alt="" data-restaurantpic>  
+       <article id="indhold" class="retter_content">
+               <img class="retter" src="" alt="" data-restaurantpic>
+                <img class="retter_logo_deli" src="" alt="" data-restaurantlogo>  
             <h2 data-restaurantnavn></h2>
             <p class="retter_kort_beskrivelse" data-restaurantbeskrivelse></p>
-            <p data-tider></p>
-            <p data-adresse></p>
-            <p data-kontakt></p>
             <a id="knap_read_more" data-restaurantnavn href=""><button>Læs mere</button></a>
        </article>
    </template>
 
+    <div id="map"></div>
+
+    <footer id="footer" data-footer>
+
+
+    </footer>
+
+
     <script>
+        let restaurantKort;
+        let map;
+
+        function initMap() {
+            var centrum = {
+                lat: 55.690071,
+                lng: 12.539130
+            };
+            map = new google.maps.Map(document.querySelector('#map'), {
+                zoom: 10,
+                center: centrum
+            });
+
+            hentWpDataTo();
+        }
+
         let restauranter;
         let templateModtager = document.querySelector("#templateModtager");
         let restaurantTemplate = document.querySelector("#restaurantTemplate");
@@ -68,16 +61,25 @@
 
         }
 
+        async function hentWpDataTo() {
+            let wpDataTo = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/delikatesser");
+
+            //vis objekt som Json
+
+            restaurantKort = await wpDataTo.json();
+
+            visRestauranterKort();
+
+        }
+
         //lav en klon af template
         function visRestauranter() {
             restauranter.forEach(restaurant => {
                 let klon = restaurantTemplate.cloneNode(true).content;
                 klon.querySelector("[data-restaurantpic]").src = restaurant.acf.foto.url;
+                klon.querySelector("[data-restaurantlogo]").src = restaurant.acf.logo.url;
                 klon.querySelector("[data-restaurantnavn]").textContent = restaurant.acf.navn;
                 klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.kort_beskrivelse;
-                //klon.querySelector("[data-tider]").innerHTML = restaurant.acf.abningstider;
-                //klon.querySelector("[data-adresse]").innerHTML = restaurant.acf.adresse;
-                //klon.querySelector("[data-kontakt]").innerHTML = restaurant.acf.kontakt;
                 klon.querySelector("#knap_read_more").href = "modtagdelikatesser.html?id=" + restaurant.id;
                 templateModtager.appendChild(klon);
             })
@@ -90,10 +92,44 @@
             document.querySelector("[data-navigation]").innerHTML = menu;
         }
 
+        function visRestauranterKort() {
+
+            let geocoder = new google.maps.Geocoder();
+            restaurantKort.forEach(restaurant => {
+
+                address = restaurant.acf.adresse;
+                let navn = restaurant.acf.adresse;
+                console.log(address);
+                geocoder.geocode({
+                    'address': address
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        //resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: navn
+                        });
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            });
+        }
+
+        async function hentFooter() {
+            let footer = await fetch("footer.html");
+            let footerIndhold = await footer.text();
+
+            document.querySelector("[data-footer]").innerHTML = footerIndhold;
+        }
+
         //hent indhold når siden er loaded 
         document.addEventListener("DOMContentLoaded", hentWpData);
         document.addEventListener("DOMContentLoaded", hentMenu);
-
+        document.addEventListener("DOMContentLoaded", hentFooter);
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
     </script>
 
 

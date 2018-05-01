@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>OM FOOD8</title>
+
+
+    <style>
+    </style>
+</head>
+
+<body>
+    <nav id="navigation" data-navigation></nav>
+
+    <div id="container">
+        <div id="slides">
+            <img class="slide showing" src="img/slider2.jpg">
+            <img class="slide" src="img/slider3.jpg">
+            <img class="slide" src="img/slider4.jpeg">
+            <img class="slide" src="img/slider5.jpeg">
+        </div>
+        <article id="indhold">
+            <h2>OM FOOD8</h2>
+
+            <p><strong>Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.</strong></p>
+            <p>Der vil altid være nye oplevelser og inspiration at hente på food8.dk. Vi samler nyheder, guides og bordbooking samme sted. Så har du allerede oplevet en af restauranter på food8, eller er der fuldt booket, så inspirerer vi dig til en anden god oplevelse. I det ugentlige nyhedsbrev kan du få historier, guides og nyheder om food8s steder.</p>
+            <p>Fælles for alle de steder, du finder på food8.dk er, at de er drevet af forskellige restauratører, som er gået sammen i en restaurationsgruppe for samlet at kunne tilbyde flere oplevelser.</p>
+            <p>Vil du i kontakt med os, så sig hej på
+                <a class="fed" href="info@food8.dk">info@food8.dk</a></p>
+        </article>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        let restauranter;
+        let map;
+
+        function initMap() {
+            var centrum = {
+                lat: 55.690071,
+                lng: 12.539130
+            };
+            map = new google.maps.Map(document.querySelector('#map'), {
+                zoom: 10,
+                center: centrum
+            });
+
+            hentWpData();
+        }
+
+
+
+        async function hentWpData() {
+            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
+
+            //vis objekt som Json
+            restauranter = await wpData.json();
+            visRestauranter();
+        }
+
+
+        function visRestauranter() {
+
+            let geocoder = new google.maps.Geocoder();
+            restauranter.forEach(restaurant => {
+
+                address = restaurant.acf.adresse;
+                let navn = restaurant.acf.adresse;
+                console.log(address);
+                geocoder.geocode({
+                    'address': address
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        //resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: navn
+                        });
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            });
+        }
+    </script>
+
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+    </script>
+
+    <footer id="footer" data-footer></footer>
+
+    <script>
+        var slides = document.querySelectorAll('#slides .slide');
+        var currentSlide = 0;
+        var slideInterval = setInterval(nextSlide, 3000);
+
+        function nextSlide() {
+            slides[currentSlide].className = 'slide';
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].className = 'slide showing';
+        }
+    </script>
+
+    <script>
+        async function hentMenu() {
+            let topMenu = await fetch("navigation.html");
+            let menu = await topMenu.text();
+
+            document.querySelector("[data-navigation]").innerHTML = menu;
+        }
+
+        //hent indhold når siden er loaded 
+        document.addEventListener("DOMContentLoaded", hentMenu);
+
+
+        async function hentFooter() {
+            let footer = await fetch("footer.html");
+            let footerIndhold = await footer.text();
+
+            document.querySelector("[data-footer]").innerHTML = footerIndhold;
+        }
+
+        //hent indhold når siden er loaded 
+        document.addEventListener("DOMContentLoaded", hentFooter);
+    </script>
+
+
+
+</body>
+
+</html>

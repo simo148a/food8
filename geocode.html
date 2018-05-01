@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        let restaurantkort;
+        let map;
+
+        function initMap() {
+            var centrum = {
+                lat: 55.690071,
+                lng: 12.539130
+            };
+            map = new google.maps.Map(document.querySelector('#map'), {
+                zoom: 10,
+                center: centrum
+            });
+
+            hentWpData();
+        }
+
+
+
+        async function hentWpData() {
+            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
+
+            //vis objekt som Json
+            restaurantkort = await wpData.json();
+            visRestauranterKort();
+        }
+
+
+        function visRestauranterKort() {
+
+            let geocoder = new google.maps.Geocoder();
+            restaurantkort.forEach(restaurant => {
+
+                address = restaurant.acf.adresse;
+                let navn = restaurant.acf.adresse;
+                console.log(address);
+                geocoder.geocode({
+                    'address': address
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        //resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: navn
+                        });
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            });
+        }
+    </script>
+
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+    </script>
+</body>
+</html>
