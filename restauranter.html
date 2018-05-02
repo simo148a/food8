@@ -18,9 +18,9 @@
     <template id="restaurantTemplate">
        <article id="indhold_restaurant">
               <div class="retter_content">
-               <img class="retter" src="" alt="" data-restaurantpic>  
+                  <a data-restaurantknap2 href=""><img class="retter" src="" alt="" data-restaurantpic></a>
                <img class="retter_logo" src="" alt="" data-restaurantlogo>
-            <h2 data-restaurantnavn></h2>
+                  <a data-restaurantknap3 href=""><h2 data-restaurantnavn></h2></a>
             <p class="retter_kort_beskrivelse" data-restaurantbeskrivelse></p>
             <a id="knap" data-restaurantknap href=""><button>Læs mere</button></a>
             <a id="knap" data-restaurantpdf href="img/menukort.pdf"><button>Menukort</button></a>
@@ -32,7 +32,7 @@
 
     <div id="stor_footer">
         <div id="indhold">
-            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <h2>Find vores lækre restauranter og delikatesser her</h2>
             <div id="map"></div>
         </div>
         <footer id="footer" data-footer></footer>
@@ -91,6 +91,8 @@
                 klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.kort_beskrivelse;
                 klon.querySelector("[data-restaurantpdf]").href = restaurant.acf.menukort.url;
                 klon.querySelector("[data-restaurantknap]").href = "modtagrestaurant.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantknap2]").href = "modtagrestaurant.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantknap3]").href = "modtagrestaurant.html?id=" + restaurant.id;
                 klon.querySelector("[data-restaurantbook]").href = "modtagrestaurant.html?id=" + restaurant.id + "#book_bord";
                 templateModtager.appendChild(klon);
             })

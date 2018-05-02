@@ -213,17 +213,23 @@ img.retter {
 }
 
 .retter_logo {
-    width: 20vw;
+    height: auto;
+    width: 33%;
     position: absolute;
-    bottom: 50vw;
-    left: 40%;
+    top: 12%;
+    left: 33%;
+}
+
+.img.retter_logo {
+    vertical-align: middle;
 }
 
 .retter_logo_deli {
-    width: 20vw;
+    height: auto;
+    width: 33%;
     position: absolute;
-    bottom: 280px;
-    left: 40%;
+    top: 10%;
+    left: 33%;
 }
 
 .overskrift {
@@ -676,9 +682,13 @@ footer p {
 
 @media screen and (min-width: 750px) {
 
+    header {
+        display: flex;
+    }
+
     #logo {
-        margin-right: 20px;
-        width: 25%;
+        margin-right: 22.5vw;
+        width: 55%;
     }
 
     .overskrift {

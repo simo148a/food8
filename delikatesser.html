@@ -15,17 +15,17 @@
     <section id="templateModtager"></section>
     <template id="restaurantTemplate">
        <article id="indhold" class="retter_content">
-               <img class="retter" src="" alt="" data-restaurantpic>
+           <a data-restaurantknap2 href=""><img class="retter" src="" alt="" data-restaurantpic></a>
                 <img class="retter_logo_deli" src="" alt="" data-restaurantlogo>  
-            <h2 data-restaurantnavn></h2>
+           <a data-restaurantknap3 href=""><h2 data-restaurantnavn></h2></a>
             <p class="retter_kort_beskrivelse" data-restaurantbeskrivelse></p>
-            <a id="knap_read_more" data-restaurantnavn href=""><button>Læs mere</button></a>
+            <a id="knap_read_more" data-restaurantknap href=""><button>Læs mere</button></a>
        </article>
    </template>
 
     <div id="stor_footer">
         <div id="indhold">
-            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <h2>Find vores lækre restauranter og delikatesser her</h2>
             <div id="map"></div>
         </div>
         <footer id="footer" data-footer></footer>
@@ -83,7 +83,9 @@
                 klon.querySelector("[data-restaurantlogo]").src = restaurant.acf.logo.url;
                 klon.querySelector("[data-restaurantnavn]").textContent = restaurant.acf.navn;
                 klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.kort_beskrivelse;
-                klon.querySelector("#knap_read_more").href = "modtagdelikatesser.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantknap]").href = "modtagdelikatesser.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantknap2]").href = "modtagdelikatesser.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantknap3]").href = "modtagdelikatesser.html?id=" + restaurant.id;
                 templateModtager.appendChild(klon);
             })
         }

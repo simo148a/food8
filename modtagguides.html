@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="img/favicon.png">
     <meta name="description" content="Vil du være den der anbefaler restauranter til dine venner? Skriv dig op til vores nyhedsbrev og få ugentlige guides og nyheder af food8s restauranter, madbutikker og barer.">
-    <title>FOOD8 | NYHEDER</title>
+    <title>FOOD8 | GUIDES</title>
 </head>
 
 
@@ -63,7 +63,7 @@
         let url = new URL(window.location.href);
         let parameter = new URLSearchParams(url.search);
         let id = parameter.get("id");
-        let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/nyheder/" + id);
+        let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/guides/" + id);
         let single = await jsonData.json();
         document.querySelector("[data-nyhedpic]").src = single.acf.foto.url;
         document.querySelector("[data-nyhednavn]").textContent = single.acf.overskrift;

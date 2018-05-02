@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="img/favicon.png">
     <meta name="description" content="Vil du være den der anbefaler restauranter til dine venner? Skriv dig op til vores nyhedsbrev og få ugentlige guides og nyheder af food8s restauranter, madbutikker og barer i København.">
-    <title>FOOD8 | NYHEDER</title>
+    <title>FOOD8 | GUIDES</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
     </div>
 
     <nav id="navigation" data-navigation></nav>
-    <h2 class="overskrift">NYHEDER</h2>
+    <h2 class="overskrift">GUIDES</h2>
     <div class="form_nyhedsbrev">
         <form id="contact">
             <h2 class="nyheder_h2">Vil du være den der anbefaler restauranter til dine venner?</h2>
@@ -63,7 +63,7 @@
         let nyhedTemplate = document.querySelector("#nyhedTemplate");
         //hent Json
         async function hentWpData() {
-            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/nyheder");
+            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/guides");
             //vis objekt som Json
             nyheder = await wpData.json();
             visNyheder();
@@ -75,9 +75,9 @@
                 klon.querySelector("[data-nyhedpic]").src = nyhed.acf.foto.url;
                 klon.querySelector("[data-nyhednavn]").textContent = nyhed.acf.overskrift;
                 klon.querySelector("[data-kort_nyhedbeskrivelse]").innerHTML = nyhed.acf.kort_beskrivelse;
-                klon.querySelector("[data-restaurantknap]").href = "modtagnyheder.html?id=" + nyhed.id;
-                klon.querySelector("[data-restaurantknap2]").href = "modtagnyheder.html?id=" + nyhed.id;
-                klon.querySelector("[data-restaurantknap3]").href = "modtagnyheder.html?id=" + nyhed.id;
+                klon.querySelector("[data-restaurantknap]").href = "modtagguides.html?id=" + nyhed.id;
+                klon.querySelector("[data-restaurantknap2]").href = "modtagguides.html?id=" + nyhed.id;
+                klon.querySelector("[data-restaurantknap3]").href = "modtagguides.html?id=" + nyhed.id;
                 templateModtager.appendChild(klon);
             })
         }
