@@ -10,6 +10,8 @@
 
 
     <style>
+
+
     </style>
 </head>
 
@@ -17,13 +19,18 @@
     <nav id="navigation" data-navigation></nav>
 
     <div id="container">
-        <div id="slides">
-            <img class="slide showing" src="img/slider2.jpg">
-            <img class="slide" src="img/slider3.jpg">
-            <img class="slide" src="img/slider4.jpeg">
-            <img class="slide" src="img/slider5.jpeg">
-        </div>
         <article id="indhold">
+            <div id="slides">
+                <img class="slide showing" src="img/slider1.jpg">
+                <img class="slide" src="img/slider2.jpg">
+                <img class="slide" src="img/slider3.jpg">
+                <img class="slide" src="img/slider4.jpeg">
+                <img class="slide" src="img/slider5.jpeg">
+                <img class="slide" src="img/slider6.jpg">
+                <img class="slide" src="img/slider7.jpeg">
+                <img class="slide" src="img/slider8.jpeg">
+            </div>
+
             <h2>OM FOOD8</h2>
 
             <p><strong>Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.</strong></p>
@@ -33,7 +40,13 @@
                 <a class="fed" href="info@food8.dk">info@food8.dk</a></p>
         </article>
     </div>
-    <div id="map"></div>
+    <div id="stor_footer">
+        <div id="indhold">
+            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <div id="map"></div>
+        </div>
+        <footer id="footer" data-footer></footer>
+    </div>
 
     <script>
         let restauranter;
@@ -87,25 +100,27 @@
                 });
             });
         }
+
     </script>
 
 
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
-    </script>
 
-    <footer id="footer" data-footer></footer>
+
+    </script>
 
     <script>
         var slides = document.querySelectorAll('#slides .slide');
         var currentSlide = 0;
-        var slideInterval = setInterval(nextSlide, 3000);
+        var slideInterval = setInterval(nextSlide, 2500);
 
         function nextSlide() {
             slides[currentSlide].className = 'slide';
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].className = 'slide showing';
         }
+
     </script>
 
     <script>
@@ -129,6 +144,7 @@
 
         //hent indhold når siden er loaded 
         document.addEventListener("DOMContentLoaded", hentFooter);
+
     </script>
 
 

@@ -23,9 +23,16 @@
         <p data-adresse></p>
         <h3>Kontrolrapport</h3>
         <a id="kontrolrapport" href="" data-kontrolrapport>Se kontrolrapport <span class="underline">her</span></a>
+        <iframe id="book_bord" src="https://xd.adobe.com/embed/eb87f564-729b-4400-4d53-a26991873eb9-9db6/" frameborder="0"></iframe>
     </article>
-    <div id="map"></div>
-    <footer id="footer" data-footer></footer>
+
+    <div id="stor_footer">
+        <div id="indhold">
+            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <div id="map"></div>
+        </div>
+        <footer id="footer" data-footer></footer>
+    </div>
 </body>
 
 <script>
@@ -33,10 +40,8 @@
         let url = new URL(window.location.href);
         let parameter = new URLSearchParams(url.search);
         let id = parameter.get("id");
-
         let jsonData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter/" + id);
         let single = await jsonData.json();
-
         document.querySelector("[data-restaurantpic]").src = single.acf.foto.url;
         document.querySelector("[data-restaurantnavn]").textContent = single.acf.navn;
         document.querySelector("[data-restaurantbeskrivelse]").innerHTML = single.acf.beskrivelse;
@@ -44,16 +49,12 @@
         document.querySelector("[data-adresse]").innerHTML = single.acf.adresse;
         document.querySelector("[data-kontakt]").innerHTML = single.acf.kontakt;
         document.querySelector("[data-kontrolrapport]").href = single.acf.kontrolrapport.url;
-
     }
-
     async function hentMenu() {
         let topMenu = await fetch("navigation.html");
         let menu = await topMenu.text();
-
         document.querySelector("[data-navigation]").innerHTML = menu;
     }
-
     let restaurantKort;
     let map;
 
@@ -66,28 +67,20 @@
             zoom: 10,
             center: centrum
         });
-
         hentWpDataTo();
     }
-
     async function hentWpDataTo() {
         let url = new URL(window.location.href);
         let parameter = new URLSearchParams(url.search);
         let id = parameter.get("id");
-
         let wpDataTo = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter/" + id);
-
         //vis objekt som Json
-
         restaurantKort = await wpDataTo.json();
-
         let geocoder = new google.maps.Geocoder();
         visRestauranterKort(geocoder, map);
-
     }
 
     function visRestauranterKort(geocoder, resultsmap) {
-
         address = restaurantKort.acf.adresse;
         let navn = restaurantKort.acf.adresse;
         console.log(address);
@@ -109,10 +102,8 @@
     async function hentFooter() {
         let footer = await fetch("footer.html");
         let footerIndhold = await footer.text();
-
         document.querySelector("[data-footer]").innerHTML = footerIndhold;
     }
-
     //hent indhold når siden er loaded
     document.addEventListener("DOMContentLoaded", hentJson);
     document.addEventListener("DOMContentLoaded", hentMenu);

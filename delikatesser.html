@@ -21,12 +21,13 @@
        </article>
    </template>
 
-    <div id="map"></div>
-
-    <footer id="footer" data-footer>
-
-
-    </footer>
+    <div id="stor_footer">
+        <div id="indhold">
+            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <div id="map"></div>
+        </div>
+        <footer id="footer" data-footer></footer>
+    </div>
 
 
     <script>
@@ -128,8 +129,11 @@
         document.addEventListener("DOMContentLoaded", hentWpData);
         document.addEventListener("DOMContentLoaded", hentMenu);
         document.addEventListener("DOMContentLoaded", hentFooter);
+
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+
+
     </script>
 
 

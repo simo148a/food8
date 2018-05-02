@@ -7,6 +7,10 @@ a {
     font-family: 'Libre Franklin', sans-serif;
 }
 
+a {
+    cursor: pointer;
+}
+
 h2 {
     color: #344151;
     font-size: 22px;
@@ -37,8 +41,15 @@ p {
     text-decoration: underline;
 }
 
+button:hover {
+    background: rgba(0, 0, 0, 0) !important;
+    color: #000;
+    box-shadow: inset 0 0 0 3px #75cab9;
+}
+
 body {
-    background-image: url(img/baggrund.jpg);
+    width: 100%;
+    background-image: url(img/baggrund_sten.jpg);
     background-size: cover;
     margin: 0;
     box-sizing: border-box;
@@ -50,6 +61,112 @@ body {
     width: 78%;
     float: right;
     margin: 20px 20px 20px 0;
+}
+
+#arrow {
+    cursor: pointer;
+    padding: 4em 0;
+    width: 14%;
+    margin: 0 43%;
+    @include animation(bounce 2s infinite);
+}
+
+.bounce {
+    -moz-animation: bounce 3s infinite;
+    -webkit-animation: bounce 3s infinite;
+    animation: bounce 3s infinite;
+}
+
+@-webkit-keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    40% {
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px);
+    }
+    60% {
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    40% {
+        -moz-transform: translateY(-20px);
+        -ms-transform: translateY(-20px);
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px);
+    }
+    60% {
+        -moz-transform: translateY(-15px);
+        -ms-transform: translateY(-15px);
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+}
+
+@include keyframes(bounce) {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        @include transform(translateY(0));
+    }
+    40% {
+        @include transform(translateY(-20px));
+    }
+    60% {
+        @include transform(translateY(-15px));
+    }
+}
+
+
+#forside_baggrund {
+    height: 100%;
+    background-image: url(img/baggrund.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: left;
+}
+
+.tekst_indhold {
+    overflow-wrap: break-word;
+    width: 80%;
+    padding: 1em;
+    line-height: 1.3em;
+    text-shadow: 1px 1px #FFF;
+    padding-bottom: 20px;
+    text-align: center;
+    font-weight: 400;
+    margin: 0 auto;
+    clear: both;
+    color: #000;
+}
+
+.tekst_indhold_h3 {
+    text-align: center;
+    font-weight: 400;
+    text-shadow: 1px 1px #FFF;
+    color: #000;
+    font-size: 18px;
 }
 
 #indhold {
@@ -89,8 +206,6 @@ img.retter {
     object-fit: cover;
 }
 
-.retter {}
-
 .retter_content {
     z-index: 0;
     position: relative;
@@ -99,7 +214,7 @@ img.retter {
 .retter_logo {
     width: 20vw;
     position: absolute;
-    bottom: 200px;
+    bottom: 50vw;
     left: 40%;
 }
 
@@ -138,6 +253,7 @@ img.retter {
 }
 
 .retter_kort_beskrivelse p {
+    text-shadow: 1px 1px #FFF;
     margin: 0;
 }
 
@@ -183,8 +299,7 @@ fieldset {
     padding: 10px;
 }
 
-#contact button[type="submit"],
-#contact_modtager button[type="submit"] {
+#myBtn {
     cursor: pointer;
     width: 100%;
     border: none;
@@ -195,10 +310,7 @@ fieldset {
     font-size: 15px;
 }
 
-.w3-container,
-.w3-panel {
-    padding: 16px !important;
-}
+
 
 /*------------MENU--------------*/
 
@@ -215,8 +327,8 @@ fieldset {
 
 #menuToggle input {
     display: block;
-    width: 40px;
-    height: 32px;
+    width: 60px;
+    height: 50px;
     position: absolute;
     top: -7px;
     left: -5px;
@@ -286,13 +398,13 @@ fieldset {
 }
 
 #menu {
-    z-index: 100;
+    z-index: 1;
     position: absolute;
     width: 83%;
     margin: -100px 0 0 -50px;
     padding: 50px;
     padding-top: 125px;
-    background: #ededed;
+    background-color: rgba(237, 237, 237, 0.97);
     list-style-type: none;
     -webkit-font-smoothing: antialiased;
     /* to stop flickering of text in safari */
@@ -301,7 +413,9 @@ fieldset {
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
 }
 
-#menuToggle span {}
+#menuToggle span {
+    z-index: 110;
+}
 
 #menu li {
     padding: 10px 0;
@@ -313,17 +427,15 @@ fieldset {
     transform: none;
 }
 
-
 /*--------------GALLERI SLIDER-----------------*/
 
 #slides {
     clear: both;
     width: 100%;
-    height: 200px;
+    height: 280px;
     object-fit: cover;
     position: relative;
     padding: 0px;
-    margin: 0px;
     list-style-type: none;
 }
 
@@ -418,21 +530,42 @@ fieldset {
     }
 }*/
 
+/*-------------BOOKING---------------*/
+
+#book_bord {
+    margin-top: 1em;
+    width: 100%;
+    height: 650px;
+}
+
+
 /*-------------FOOTER---------------*/
 
 #map {
-
+    filter: grayscale(100%);
     width: 100%;
-    height: 200px;
+    height: 300px;
 }
 
 footer {
-    margin: 1em;
+    padding: 10px 0;
+    padding: 1em;
+    margin-top: 1em;
     display: grid;
     grid-template-columns: repeat(2,
     1fr);
     grid-gap: 20px;
     grid-column: 1
+}
+
+#stor_footer {
+    clear: both;
+    border-top: solid 5px #80cebe;
+    background: rgba(98, 194, 175, 0.47);
+}
+
+#stor_footer h2 {
+    margin: 5px 0px 10px 0px;
 }
 
 #socialmedia {
@@ -441,9 +574,11 @@ footer {
 }
 
 img.socialicon {
+    position: relative;
+    bottom: -50px;
     padding: 3px;
     float: right;
-    width: 40px;
+    width: 30px;
 }
 
 #kontakt {
@@ -453,17 +588,21 @@ img.socialicon {
 
 #tilmeld_footer button {
     width: 100%;
-    background: #79c9b9;
+    background: #4a5765;
     border: 0;
     padding: 7px 16px;
     font-size: 11px;
     font-weight: 100;
     border-radius: 8px;
-    margin: 0px;
-    margin-bottom: 20px;
+    border: solid 1px #adadad;
+    margin-top: 15px;
+    color: #FFF;
 }
 
 footer p {
+    font-size: 12px;
+    color: #515d6a;
+    font-weight: 700;
     margin-bottom: 5px;
 }
 
@@ -493,12 +632,8 @@ footer p {
     }
 
     #slides {
-        height: 250px;
-    }
-
-    #slides1 {
-        height: 100%;
         width: 100%;
+        height: 250px;
     }
 
     p {

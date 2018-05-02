@@ -8,104 +8,103 @@
     <link rel="stylesheet" href="style.css">
     <title>FOOD8</title>
 
-    <style>
-        .tekst_indhold {
-            padding-bottom: 20px;
-            text-align: center;
-            font-weight: 400;
-            margin: 0 auto;
-            width: 75%;
-            clear: both;
-        }
-
-    </style>
-
 </head>
 
 <body>
-    <div id="baggrund_slider">
+    <div id="forside_baggrund">
+        <!--<div id="slidebox">-->
         <nav id="navigation" data-navigation></nav>
 
         <h2 class="tekst_indhold">
             Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.
         </h2>
-        <!--<div class="crossfade">
-        <figure></figure>
-        <figure></figure>
-        <figure></figure>
-        <figure></figure>
-        <figure></figure>
-    </div>-->
+        <h3 class="tekst_indhold_h3">Hvor skal du spise næste gang?</h3>
+        <a href="#templateModtager"><img id="arrow" class="bounce" src="img/arrow.png" alt="Navigation til kort over resturanter"></a>
 
-        <div id="map"></div>
-
-        <script>
-            let restauranter;
-            let map;
-
-            function initMap() {
-                var centrum = {
-                    lat: 55.690071,
-                    lng: 12.539130
-                };
-                map = new google.maps.Map(document.querySelector('#map'), {
-                    zoom: 10,
-                    center: centrum
-                });
-
-                hentWpData();
-            }
+        <section id="templateModtager"></section>
+        <template id="restaurantTemplate">
+       <article id="indhold_restaurant">
+              <div class="retter_content">
+               <img class="retter" src="" alt="" data-restaurantpic>
+               <img class="retter_logo" src="" alt="" data-restaurantlogo>
+            <h2 class="forside_navne" data-restaurantnavn></h2>
+            <p class="retter_kort_beskrivelse" data-restaurantbeskrivelse></p>
+            <a id="knap" data-restaurantknap href=""><button>Læs mere</button></a>
+            <a id="knap" data-restaurantpdf href="img/menukort.pdf"><button>Menukort</button></a>
+            <a id="knap" data-restaurantbook href=""><button>Book bord</button></a>
+            </div>
+       </article>
+   </template>
 
 
-
-            async function hentWpData() {
-                let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
-
-                //vis objekt som Json
-                restauranter = await wpData.json();
-                visRestauranter();
-            }
-
-
-            function visRestauranter() {
-
-                let geocoder = new google.maps.Geocoder();
-                restauranter.forEach(restaurant => {
-
-                    address = restaurant.acf.adresse;
-                    let navn = restaurant.acf.adresse;
-                    console.log(address);
-                    geocoder.geocode({
-                        'address': address
-                    }, function(results, status) {
-                        if (status === 'OK') {
-                            //resultsMap.setCenter(results[0].geometry.location);
-                            var marker = new google.maps.Marker({
-                                map: map,
-                                position: results[0].geometry.location,
-                                title: navn
-                            });
-                        } else {
-                            alert('Geocode was not successful for the following reason: ' + status);
-                        }
-                    });
-                });
-            }
-
-        </script>
-
-
-
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
-
-
-        </script>
-
-        <footer id="footer" data-footer></footer>
+        <div id="stor_footer">
+            <div id="indhold">
+                <h2>Find vores lækre resturanter og delikatesser her</h2>
+                <div id="map"></div>
+            </div>
+            <footer id="footer" data-footer></footer>
+        </div>
     </div>
-
     <script>
-        //HENT HEADER
+        //Her starter ny kode
+
+        let restaurantKort;
+        let map;
+
+        function initMap() {
+            var centrum = {
+                lat: 55.690071,
+                lng: 12.539130
+            };
+            map = new google.maps.Map(document.querySelector('#map'), {
+                zoom: 10,
+                center: centrum
+            });
+
+            hentWpDataTo();
+        }
+
+        let restauranter;
+        let templateModtager = document.querySelector("#templateModtager");
+        let restaurantTemplate = document.querySelector("#restaurantTemplate");
+
+        //hent Json
+        async function hentWpData() {
+            let wpData = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
+
+            //vis objekt som Json
+            restauranter = await wpData.json();
+            visRestauranter();
+
+        }
+
+        async function hentWpDataTo() {
+            let wpDataTo = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
+
+            //vis objekt som Json
+
+            restaurantKort = await wpDataTo.json();
+
+            visRestauranterKort();
+
+        }
+
+        //lav en klon af template
+        function visRestauranter() {
+            restauranter.forEach(restaurant => {
+                let klon = restaurantTemplate.cloneNode(true).content;
+                klon.querySelector("[data-restaurantpic]").src = restaurant.acf.foto.url;
+                klon.querySelector("[data-restaurantnavn]").textContent = restaurant.acf.navn;
+                klon.querySelector("[data-restaurantlogo]").src = restaurant.acf.logo.url;
+                klon.querySelector("[data-restaurantbeskrivelse]").innerHTML = restaurant.acf.kort_beskrivelse;
+                klon.querySelector("[data-restaurantpdf]").href = restaurant.acf.menukort.url;
+                klon.querySelector("[data-restaurantknap]").href = "modtagrestaurant.html?id=" + restaurant.id;
+                klon.querySelector("[data-restaurantbook]").href = "modtagrestaurant.html?id=" + restaurant.id + "#book_bord";
+                templateModtager.appendChild(klon);
+            })
+        }
+
+
         async function hentMenu() {
             let topMenu = await fetch("navigation.html");
             let menu = await topMenu.text();
@@ -113,11 +112,33 @@
             document.querySelector("[data-navigation]").innerHTML = menu;
         }
 
-        //hent indhold når siden er loaded 
-        document.addEventListener("DOMContentLoaded", hentMenu);
+        function visRestauranterKort() {
+
+            let geocoder = new google.maps.Geocoder();
+            restaurantKort.forEach(restaurant => {
+
+                address = restaurant.acf.adresse;
+                let navn = restaurant.acf.adresse;
+                console.log(address);
+                geocoder.geocode({
+                    'address': address
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        //resultsMap.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: navn
+                        });
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            });
+        }
 
 
-        //HENT FOOTER
+
         async function hentFooter() {
             let footer = await fetch("footer.html");
             let footerIndhold = await footer.text();
@@ -126,9 +147,47 @@
         }
 
         //hent indhold når siden er loaded 
+        document.addEventListener("DOMContentLoaded", hentWpData);
+        document.addEventListener("DOMContentLoaded", hentMenu);
         document.addEventListener("DOMContentLoaded", hentFooter);
 
     </script>
+
+    <!------Smooth Scroll to Section------->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Add smooth scrolling to all links
+            $("a").on('click', function(event) {
+
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 1000, function() {
+
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        });
+
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+
+
+    </script>
+
 
 </body>
 
