@@ -4,13 +4,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
-    <title></title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Vil du være den der anbefaler restauranter til dine venner? Skriv dig op til vores nyhedsbrev og få ugentlige guides og nyheder af food8s restauranter, madbutikker og barer.">
+    <title>FOOD8 | NYHEDER</title>
 </head>
 
 
 
 <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Tak for din tilmelding!</h2>
+            <p>Du nu fremover modtage<br> spænende nyheder fra Food8.<br></p>
+            <p>Vi glæder os dele det seneste nye inden for mad og delikatesse verdens, samt forkæle dig med gode tilbud og sjove konkurrencer.</p>
+        </div>
+    </div>
+
     <nav id="navigation" data-navigation></nav>
 
     <article id="indhold">
@@ -20,8 +32,10 @@
     </article>
 
     <div class="form_nyhedsbrev">
-        <form id="contact" action="" method="post">
-            <h2>Vil du være den der anbefaler restauranter til dine venner?</h2>
+        <div class="hr_line"></div>
+        <h2 class="overskrift">NYHEDSBREV</h2>
+        <form id="contact">
+            <h2 class="nyheder_h2">Vil du være den der anbefaler restauranter til dine venner?</h2>
             <p>Skriv dig op til vores nyhedsbrev og få ugentlige guides og nyheder om food8s deltagende steder.</p>
             <fieldset>
                 <input placeholder="Navn" type="text" required>
@@ -29,22 +43,11 @@
             <fieldset>
                 <input placeholder="Email" type="email" required>
             </fieldset>
-            <fieldset>
-                <button name="submit" type="submit" id="contact-submit" onclick="document.getElementById('id01').style.display='block'">
-                    Tilmeld
-                </button>
+            <fieldset id="submit_nyhed">
+                <a href="#" id="myBtn"> Tilmeld</a>
             </fieldset>
         </form>
     </div>
-
-    <!--<div id="id01" class="w3-modal">
-        <div class="w3-modal-content">
-            <div class="w3-container">
-                <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <p>Tak, du er nu tilmeldt nyhedsbrevet.<br> Inden fro 24 timer vil du modtage en bekræftelsesmail og fremover modtage spændende nyheder fra Food8</p>
-            </div>
-        </div>
-    </div>-->
 
     <div id="stor_footer">
         <div id="indhold">
@@ -71,9 +74,6 @@
         let menu = await topMenu.text();
         document.querySelector("[data-navigation]").innerHTML = menu;
     }
-    //hent indhold når siden er loaded
-    document.addEventListener("DOMContentLoaded", hentJson);
-    document.addEventListener("DOMContentLoaded", hentMenu);
 
     async function hentFooter() {
         let footer = await fetch("footer.html");
@@ -82,7 +82,108 @@
         document.querySelector("[data-footer]").innerHTML = footerIndhold;
     }
 
+    let restaurantKort;
+    let map;
+
+    function initMap() {
+        var centrum = {
+            lat: 55.690071,
+            lng: 12.539130
+        };
+        map = new google.maps.Map(document.querySelector('#map'), {
+            zoom: 10,
+            center: centrum
+        });
+
+        hentWpDataTo();
+    }
+    async function hentWpDataTo() {
+        let wpDataTo = await fetch("http://anjaholstnielsen.dk/kea/2sem/tema7/food8/wordpress/wp-json/wp/v2/restauranter");
+
+        //vis objekt som Json
+
+        restaurantKort = await wpDataTo.json();
+
+        visRestauranterKort();
+
+    }
+
+    function visRestauranterKort() {
+
+        let geocoder = new google.maps.Geocoder();
+        restaurantKort.forEach(restaurant => {
+
+            address = restaurant.acf.adresse;
+            let navn = restaurant.acf.adresse;
+            console.log(address);
+            geocoder.geocode({
+                'address': address
+            }, function(results, status) {
+                if (status === 'OK') {
+                    //resultsMap.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: navn,
+                        icon: "grafik/pointer4.png",
+                    });
+
+                    //infovindue
+                    let infowindow = new google.maps.InfoWindow({
+                        content: "<a href = " + "modtagrestaurant.html?id=" + restaurant.id + ">" + "<h4>" + restaurant.acf.navn + "</h4>" + "</a>" + "<br>" +
+                            navn + "<br>" + "<br>" + restaurant.acf.abningstider,
+                    })
+
+                    //click åben infovindue
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        });
+    }
+
     //hent indhold når siden er loaded 
     document.addEventListener("DOMContentLoaded", hentFooter);
+    document.addEventListener("DOMContentLoaded", hentJson);
+    document.addEventListener("DOMContentLoaded", hentMenu);
+
+</script>
+
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
+
+
+</script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 
 </script>

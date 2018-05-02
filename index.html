@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen i København. Her kan du gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer, hvor der altid vil være mulighed for nye oplevelser og spændende inspiration.">
     <title>FOOD8</title>
 
 </head>
@@ -16,7 +18,7 @@
         <nav id="navigation" data-navigation></nav>
 
         <h2 class="tekst_indhold">
-            Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.
+            Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan du gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer, hvor der altid vil være mulighed for nye oplevelser og spændende inspiration.
         </h2>
         <h3 class="tekst_indhold_h3">Hvor skal du spise næste gang?</h3>
         <a href="#templateModtager"><img id="arrow" class="bounce" src="img/arrow.png" alt="Navigation til kort over resturanter"></a>
@@ -128,8 +130,21 @@
                         var marker = new google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location,
-                            title: navn
+                            title: navn,
+                            icon: "grafik/pointer4.png",
                         });
+
+                        //infovindue
+                        let infowindow = new google.maps.InfoWindow({
+                            content: "<a href = " + "modtagrestaurant.html?id=" + restaurant.id + ">" + "<h4>" + restaurant.acf.navn + "</h4>" + "</a>" + "<br>" +
+                                navn + "<br>" + "<br>" + restaurant.acf.abningstider,
+                        })
+
+                        //click åben infovindue
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
+
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
                     }
@@ -150,7 +165,6 @@
         document.addEventListener("DOMContentLoaded", hentWpData);
         document.addEventListener("DOMContentLoaded", hentMenu);
         document.addEventListener("DOMContentLoaded", hentFooter);
-
     </script>
 
     <!------Smooth Scroll to Section------->
@@ -180,12 +194,9 @@
                 } // End if
             });
         });
-
     </script>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
-
-
     </script>
 
 

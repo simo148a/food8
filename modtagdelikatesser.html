@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Food8 er en restaurationsgruppe af individuelle restauratører og madbutikker der har slået sig sammen. Find en madbutik lige efter din smag i København. Hos os finder du alt fra vinbarer til små delikatesse butikker, som står klar til at give dig en personlig og god service.">
+    <title>FOOD8 | DELIKATESSER</title>
+</head>
+
 <body>
     <nav id="navigation" data-navigation></nav>
 
@@ -17,7 +28,7 @@
 
     <div id="stor_footer">
         <div id="indhold">
-            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <h2 data-maptekst></h2>
             <div id="map"></div>
         </div>
         <footer id="footer" data-footer></footer>
@@ -38,6 +49,7 @@
         document.querySelector("[data-adresse]").innerHTML = single.acf.adresse;
         document.querySelector("[data-kontakt]").innerHTML = single.acf.kontakt;
         document.querySelector("[data-kontrolrapport]").href = single.acf.kontrolrapport.url;
+        document.querySelector("[data-maptekst]").textContent = "Besøg " + single.acf.navn + " her:";
     }
     async function hentMenu() {
         let topMenu = await fetch("navigation.html");
@@ -81,8 +93,21 @@
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,
-                    title: navn
+                    title: navn,
+                    icon: "grafik/pointer4.png",
                 });
+
+                //infovindue
+                let infowindow = new google.maps.InfoWindow({
+                    content: "<a href = " + "modtagdelikatesser.html?id=" + restaurantKort.id + ">" + "<h4>" + restaurantKort.acf.navn + "</h4>" + "</a>" + "<br>" +
+                        navn + "<br>" + restaurantKort.acf.aabningstider,
+                })
+
+                //click åben infovindue
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }

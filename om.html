@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>OM FOOD8</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen i København. Her kan du gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer, hvor der altid vil være mulighed for nye oplevelser og spændende inspiration. Vi samler nyheder og bordbooking samme sted.">
+    <title>FOOD8 | OM FOOD8</title>
 
 
     <style>
-
-
     </style>
 </head>
 
@@ -21,10 +21,10 @@
     <div id="container">
         <article id="indhold">
             <div id="slides">
-                <img class="slide showing" src="img/slider1.jpg">
-                <img class="slide" src="img/slider2.jpg">
-                <img class="slide" src="img/slider3.jpg">
+                <img class="slide showing" src="img/slider2.jpg">
                 <img class="slide" src="img/slider4.jpeg">
+                <img class="slide" src="img/slider3.jpg">
+                <img class="slide" src="img/slider1.jpg">
                 <img class="slide" src="img/slider5.jpeg">
                 <img class="slide" src="img/slider6.jpg">
                 <img class="slide" src="img/slider7.jpeg">
@@ -33,8 +33,8 @@
 
             <h2>OM FOOD8</h2>
 
-            <p><strong>Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan man gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer – eller det, som vi ganske enkelt kalder steder.</strong></p>
-            <p>Der vil altid være nye oplevelser og inspiration at hente på food8.dk. Vi samler nyheder, guides og bordbooking samme sted. Så har du allerede oplevet en af restauranter på food8, eller er der fuldt booket, så inspirerer vi dig til en anden god oplevelse. I det ugentlige nyhedsbrev kan du få historier, guides og nyheder om food8s steder.</p>
+            <p><strong>Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Her kan du gå på opdagelse blandt kendte og ukendte restauranter, madbutikker og barer, hvor der altid vil være mulighed for nye oplevelser og spændende inspiration.</strong></p>
+            <p>Vi samler nyheder, guides og bordbooking samme sted. Så har du allerede oplevet en af restauranter på food8, eller er der fuldt booket, så inspirerer vi dig til en anden god oplevelse. I det ugentlige nyhedsbrev kan du få historier, guides og nyheder om food8s steder.</p>
             <p>Fælles for alle de steder, du finder på food8.dk er, at de er drevet af forskellige restauratører, som er gået sammen i en restaurationsgruppe for samlet at kunne tilbyde flere oplevelser.</p>
             <p>Vil du i kontakt med os, så sig hej på
                 <a class="fed" href="info@food8.dk">info@food8.dk</a></p>
@@ -92,22 +92,32 @@
                         var marker = new google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location,
-                            title: navn
+                            title: navn,
+                            icon: "grafik/pointer4.png",
                         });
+
+                        //infovindue
+                        let infowindow = new google.maps.InfoWindow({
+                            content: "<a href = " + "modtagrestaurant.html?id=" + restaurant.id + ">" + "<h4>" + restaurant.acf.navn + "</h4>" + "</a>" + "<br>" +
+                                navn + "<br>" + "<br>" + restaurant.acf.abningstider,
+                        })
+
+                        //click åben infovindue
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
+
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
                     }
                 });
             });
         }
-
     </script>
 
 
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
-
-
     </script>
 
     <script>
@@ -120,7 +130,6 @@
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].className = 'slide showing';
         }
-
     </script>
 
     <script>
@@ -144,7 +153,6 @@
 
         //hent indhold når siden er loaded 
         document.addEventListener("DOMContentLoaded", hentFooter);
-
     </script>
 
 

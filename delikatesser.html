@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delikatesser</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Food8 er en restaurationsgruppe af individuelle restauratører og madbutikker der har slået sig sammen. Find en madbutik lige efter din smag i København. Hos os finder du alt fra vinbarer til små delikatesse butikker, som står klar til at give dig en personlig og god service.">
+    <title>FOOD8 | DELIKATESSER</title>
 </head>
 
 <body>
@@ -109,8 +111,21 @@
                         var marker = new google.maps.Marker({
                             map: map,
                             position: results[0].geometry.location,
-                            title: navn
+                            title: navn,
+                            icon: "grafik/pointer4.png",
                         });
+
+                        //infovindue
+                        let infowindow = new google.maps.InfoWindow({
+                            content: "<a href = " + "modtagdelikatesser.html?id=" + restaurant.id + ">" + "<h4>" + restaurant.acf.navn + "</h4>" + "</a>" + "<br>" +
+                                navn + "<br>" + "<br>" + restaurant.acf.aabningstider,
+                        })
+
+                        //click åben infovindue
+                        marker.addListener('click', function() {
+                            infowindow.open(map, marker);
+                        });
+
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
                     }
@@ -129,11 +144,8 @@
         document.addEventListener("DOMContentLoaded", hentWpData);
         document.addEventListener("DOMContentLoaded", hentMenu);
         document.addEventListener("DOMContentLoaded", hentFooter);
-
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOBMNsAjO4xPnmez3zADKyMOQICUN3a_M&callback=initMap">
-
-
     </script>
 
 

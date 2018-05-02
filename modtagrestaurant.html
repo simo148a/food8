@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Food8 er en restaurationsgruppe af individuelle restauratører der har slået sig sammen. Find en retaurant lige efter din smag i København. Hos os finder du alt fra gourmetmad til lækker aftensmad på en hverdagsaften.">
+    <title>FOOD8 | RESTAUTENTER</title>
 </head>
 
 <body>
@@ -23,12 +24,14 @@
         <p data-adresse></p>
         <h3>Kontrolrapport</h3>
         <a id="kontrolrapport" href="" data-kontrolrapport>Se kontrolrapport <span class="underline">her</span></a>
+
+        <a id="knap_se_menukort" data-restaurantpdf href="img/menukort.pdf"><button data-menutekst></button></a>
         <iframe id="book_bord" src="https://xd.adobe.com/embed/eb87f564-729b-4400-4d53-a26991873eb9-9db6/" frameborder="0"></iframe>
     </article>
 
     <div id="stor_footer">
         <div id="indhold">
-            <h2>Find vores lækre resturanter og delikatesser her</h2>
+            <h2 data-maptekst></h2>
             <div id="map"></div>
         </div>
         <footer id="footer" data-footer></footer>
@@ -49,6 +52,9 @@
         document.querySelector("[data-adresse]").innerHTML = single.acf.adresse;
         document.querySelector("[data-kontakt]").innerHTML = single.acf.kontakt;
         document.querySelector("[data-kontrolrapport]").href = single.acf.kontrolrapport.url;
+        document.querySelector("[data-maptekst]").textContent = "Besøg " + single.acf.navn + " her:";
+        document.querySelector("[data-menutekst]").textContent = "Se " + single.acf.navn + "'s menukort";
+
     }
     async function hentMenu() {
         let topMenu = await fetch("navigation.html");
@@ -92,8 +98,21 @@
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,
-                    title: navn
+                    title: navn,
+                    icon: "grafik/pointer4.png",
                 });
+
+                //infovindue
+                let infowindow = new google.maps.InfoWindow({
+                    content: "<a href = " + "modtagrestaurant.html?id=" + restaurantKort.id + ">" + "<h4>" + restaurantKort.acf.navn + "</h4>" + "</a>" + "<br>" +
+                        navn + "<br>" + "<br>" + restaurantKort.acf.abningstider,
+                })
+
+                //click åben infovindue
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }

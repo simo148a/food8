@@ -24,10 +24,12 @@ h3 {
 }
 
 h4 {
+    color: #344151;
     margin-bottom: 0;
 }
 
 p {
+    color: #344151;
     margin-top: 0;
     font-size: 14px;
     font-weight: 100;
@@ -42,7 +44,6 @@ p {
 }
 
 button:hover {
-    background: rgba(0, 0, 0, 0) !important;
     color: #000;
     box-shadow: inset 0 0 0 3px #75cab9;
 }
@@ -226,12 +227,13 @@ img.retter {
 }
 
 .overskrift {
-    margin: 0px 0 0 20px;
+    margin: 0px 0 0 0.8em;
 }
 
 #knap button {
     width: 29%;
-    background: #79c9b9;
+    background: rgba(121, 201, 185, 0.7);
+    ;
     border: 0;
     padding: 7px 16px;
     font-size: 14px;
@@ -243,13 +245,24 @@ img.retter {
 
 #knap_read_more button {
     width: 33%;
-    background: #79c9b9;
+    background: rgba(121, 201, 185, 0.7);
     border: 0;
     padding: 7px 16px;
     font-size: 14px;
     font-weight: 100;
     border-radius: 8px;
     margin: 0px 0px 40px 0px;
+}
+
+#knap_se_menukort button {
+    width: 100%;
+    background: rgba(121, 201, 185, 0.7);
+    border: 0;
+    padding: 7px 16px;
+    font-size: 14px;
+    font-weight: 100;
+    border-radius: 8px;
+    margin: 30px 0 10px 0;
 }
 
 .retter_kort_beskrivelse p {
@@ -268,7 +281,7 @@ img.retter {
 }
 
 #contact {
-    padding: 0px 1em;
+    padding: 0px 1em 2em 1em;
     margin: 15px 0;
 
 }
@@ -300,14 +313,84 @@ fieldset {
 }
 
 #myBtn {
+    text-align: center;
     cursor: pointer;
     width: 100%;
     border: none;
     background: #79c9b9;
     color: #FFF;
     margin: 0 0 5px;
-    padding: 10px;
+    padding: 10px 42.5%;
     font-size: 15px;
+    border-radius: 8px;
+}
+
+.hr_line {
+    margin: 1em;
+    border-top: solid 3px #79c9b9;
+}
+
+/* The Modal (background) */
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+
+.modal-content {
+    text-align: center;
+    line-height: 1.3em;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal-content p {
+    margin-top: 10px;
+}
+
+/* The Close Button */
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nyheder_h2 {
+    font-weight: 400;
+    font-size: 20px;
+
 }
 
 
@@ -432,7 +515,7 @@ fieldset {
 #slides {
     clear: both;
     width: 100%;
-    height: 280px;
+    height: 270px;
     object-fit: cover;
     position: relative;
     padding: 0px;
@@ -459,77 +542,6 @@ fieldset {
     z-index: -1;
 }
 
-/*----------BACKGROUND SLIDER PÅ INDEX-----------*/
-
-/*.crossfade > figure {
-    animation: imgAnimation 20s linear infinite 0s;
-    backface-visibility: hidden;
-    background-size: cover;
-    background-position: center center;
-    color: transparent;
-    height: 100%;
-    left: 0px;
-    opacity: 0;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    z-index: 0;
-    margin: 0;
-}
-
-.crossfade > figure:nth-child(1) {
-    background-image: url('img/slider1.jpg');
-}
-
-.crossfade > figure:nth-child(2) {
-    animation-delay: 6s;
-    background-image: url('img/slider2.jpg');
-}
-
-.crossfade > figure:nth-child(3) {
-    animation-delay: 12s;
-    background-image: url('img/slider3.jpg');
-}
-
-.crossfade > figure:nth-child(4) {
-    animation-delay: 18s;
-    background-image: url('img/slider4.jpg');
-}
-
-.crossfade > figure:nth-child(5) {
-    animation-delay: 24s;
-    background-image: url('img/slider5.jpg');
-}
-
-.crossfade > figure:nth-child(6) {
-    animation-delay: 24s;
-    background-image: url('img/slider6.jpg');
-}
-
-@keyframes imgAnimation {
-    0% {
-        animation-timing-function: ease-in;
-        opacity: 0;
-    }
-
-    5% {
-        animation-timing-function: ease-out;
-        opacity: 1;
-    }
-
-    15% {
-        opacity: 1
-    }
-
-    50% {
-        opacity: 0
-    }
-
-    100% {
-        opacity: 0
-    }
-}*/
-
 /*-------------BOOKING---------------*/
 
 #book_bord {
@@ -542,7 +554,6 @@ fieldset {
 /*-------------FOOTER---------------*/
 
 #map {
-    filter: grayscale(100%);
     width: 100%;
     height: 300px;
 }
@@ -682,7 +693,7 @@ footer p {
 
     #knap button {
         width: 29%;
-        background: #79c9b9;
+        background: rgba(121, 201, 185, 0.7);
         border: 0;
         padding: 7px 16px;
         font-size: 11px;
